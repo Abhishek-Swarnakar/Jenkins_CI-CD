@@ -24,12 +24,12 @@ pipeline {
                 script {
 
                     sh '''
-                    ContainerId =$(docker ps -q)
-                    if [ -n '$ContainerId']; then
+                    ContainerId=$(docker ps -q)
+                    if [ -n '$ContainerId' ]; then
                         echo "STOPPING THE CONTAINER: $ContainerId"
                         docker stop $ContainerId
 
-                        if [$? -eq 0]; then
+                        if [ $? -eq 0 ]; then
                             echo "REMOVING THE CONATINER: $ContainerId"
                             docker rm $ContainerId
                         fi
