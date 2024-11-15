@@ -29,16 +29,17 @@ pipeline {
                     if [ -n "$ContainerId" ] && [ -n "$ImageId" ]; then
                         echo "STOPPING THE CONTAINER: $ContainerId"
                         docker stop $ContainerId
-                        echo "IMAGE ID IS: $ImageId"
-                        docker rmi -f $ImageId
+                        
 
                         if [ $? -eq 0 ]; then
                             echo "REMOVING THE CONATINER: $ContainerId"
                             docker rm $ContainerId
+                            echo "IMAGE ID IS: $ImageId"
+                            docker rmi -f $ImageId
                             
                         fi
                     else
-                        echo "NO RUNNING CONTAINER!!!"
+                        echo "NO RUNNING CONTAINER & IMAGES!!!"
                     fi
                     '''
 
