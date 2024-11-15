@@ -20,7 +20,7 @@ pipeline {
                         docker rmi -f $ImageId
                     fi
                         
-                    docker build -t abhishekswarnakar/front-end_image:${BUILD_NUMBER} -f ./Front-End/Dockerfile ./Front-End'
+                    docker build -t abhishekswarnakar/front-end_image:${BUILD_NUMBER} -f ./Front-End/Dockerfile ./Front-End
                     '''
                     //sh 'docker push abhishekswarnakar/front-end_image:${BUILD_NUMBER}'
                 }
@@ -33,17 +33,14 @@ pipeline {
 
                     sh '''
                     ContainerId=$(docker ps -q)
-                    ImageId=$(docker images -q)
-                    if [ -n "$ContainerId" ] && [ -n "$ImageId" ]; then
+                    if [ -n "$ContainerId" ]; then
                         echo "STOPPING THE CONTAINER: $ContainerId"
                         docker stop $ContainerId
                         
 
                         if [ $? -eq 0 ]; then
                             echo "REMOVING THE CONATINER: $ContainerId"
-                            docker rm $ContainerId
-                            
-                            
+                            docker rm $ContainerId  
                         fi
                     else
                         echo "NO RUNNING CONTAINER & IMAGES!!!"
