@@ -12,7 +12,7 @@ pipeline {
         stage('Build front-end Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t abhishekswarnakar/front-end_image:latest -f ./Front-end/Dockerfile ./Front-end'
+                    sh 'docker build -t abhishekswarnakar/front-end_image:latest -f ./Front-End/Dockerfile ./Front-End'
                     sh 'docker push abhishekswarnakar/front-end_image:latest'
                 }
             }
