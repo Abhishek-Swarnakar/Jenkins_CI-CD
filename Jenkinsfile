@@ -26,7 +26,7 @@ pipeline {
                     sh '''
                     ContainerId=$(docker ps -q)
                     ImageId=$(docker images -q)
-                    if [ -n '$ContainerId' ] && [ -n "$ImageId" ]; then
+                    if [ -n "$ContainerId" ] && [ -n "$ImageId" ]; then
                         echo "STOPPING THE CONTAINER: $ContainerId"
                         docker stop $ContainerId
                         echo "IMAGE ID IS: $ImageId"
