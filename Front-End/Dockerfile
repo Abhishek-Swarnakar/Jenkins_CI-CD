@@ -8,6 +8,6 @@ WORKDIR  /app
 
 COPY .  /app
 
-EXPOSE 8000
+EXPOSE 5000
 
 CMD ["nginx", "-g", "daemon off;"]

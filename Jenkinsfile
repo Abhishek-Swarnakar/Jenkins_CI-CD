@@ -44,7 +44,7 @@ pipeline {
                     '''
 
                     // Run new container with a unique name
-                    sh 'docker run -d --name front-end_container_${BUILD_NUMBER} -p 8000:8000 abhishekswarnakar/front-end_image:${BUILD_NUMBER}'
+                    sh 'docker run -d --name front-end_container_${BUILD_NUMBER} -p 5000:5000 abhishekswarnakar/front-end_image:${BUILD_NUMBER}'
                 }
             }
         }
