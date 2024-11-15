@@ -30,7 +30,7 @@ pipeline {
                         echo "STOPPING THE CONTAINER: $ContainerId"
                         docker stop $ContainerId
                         echo "IMAGE ID IS: $ImageId"
-                        docker rmi $ImageId
+                        docker rmi -f $ImageId
 
                         if [ $? -eq 0 ]; then
                             echo "REMOVING THE CONATINER: $ContainerId"
