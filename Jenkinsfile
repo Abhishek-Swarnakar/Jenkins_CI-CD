@@ -5,7 +5,7 @@ pipeline {
         stage('Git-Hub as SourceCode') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/Abhishek-Swarnakar/Jenkins_CI-CD'
+                git url: 'https://github.com/Abhishek-Swarnakar/Jenkins_CI-CD', branch: 'main'
             }
         }
 
