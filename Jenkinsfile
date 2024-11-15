@@ -29,7 +29,7 @@ pipeline {
                     if [ -n '$ContainerId' ] && [ -n "$ImageId" ]; then
                         echo "STOPPING THE CONTAINER: $ContainerId"
                         docker stop $ContainerId
-                        echo "IMAGE ID IS: $ImageId
+                        echo "IMAGE ID IS: $ImageId"
                         docker rmi $ImageId
 
                         if [ $? -eq 0 ]; then
