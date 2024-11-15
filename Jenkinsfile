@@ -40,16 +40,6 @@ pipeline {
         failure {
             echo "PIPELINE FAILED!!!! CHECK THE LOGS FOR DETAILS."
         }
-        always {
-            script {
-                try {
-                    // This part is useful if you want to clean up any container created during the build, even if it failed
-                    sh 'docker stop front-end_container_${BUILD_NUMBER} || true'
-                    sh 'docker rm front-end_container_${BUILD_NUMBER} || true'
-                } catch (Exception e) {
-                    echo "Error stopping/removing container: ${e}"
-                }
-            }
-        }
+        
     }
 }
