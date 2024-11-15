@@ -22,9 +22,21 @@ pipeline {
         stage('Run front-end Docker image') {
             steps {
                 script {
-                    // Stop and remove old container if it exists
-                    sh 'docker stop front-end_container_${BUILD_NUMBER} || true'
-                    sh 'docker rm front-end_container_${BUILD_NUMBER} || true'
+
+                    sh '''
+                    ContainerId =$(docker ps -q)
+                    if [ -n '$ContainerId']; then
+                        echo "STOPPING THE CONTAINER: $ContainerId"
+                        docker stop $ContainerId
+
+                        if [$? -eq 0]; then
+                            echo "REMOVING THE CONATINER: $ContainerId"
+                            docker rm $ContainerId
+                        fi
+                    else
+                        echo "NO RUNNING CONTAINER!!!"
+                    fi
+                    '''
 
                     // Run new container with a unique name
                     sh 'docker run -d --name front-end_container_${BUILD_NUMBER} -p 8000:8000 abhishekswarnakar/front-end_image:${BUILD_NUMBER}'
