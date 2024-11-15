@@ -1,10 +1,11 @@
 pipeline {
-    agent any 
-
+    agent any
+    environment {
+        DOCKER_BUILDKIT = '1'
+    }
     stages {
-        stage('Git-Hub as SourceCode') {
+        stage('Checkout SCM') {
             steps {
-                // Get some code from a GitHub repository
                 git url: 'https://github.com/Abhishek-Swarnakar/Jenkins_CI-CD', branch: 'main'
             }
         }
@@ -12,8 +13,8 @@ pipeline {
         stage('Build front-end Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t abhishekswarnakar/front-end_image:latest -f ./Front-End/Dockerfile ./Front-End'
-                    //sh 'docker push abhishekswarnakar/front-end_image:latest'
+                    sh 'docker build -t abhishekswarnakar/front-end_image:${BUILD_NUMBER} -f ./Front-End/Dockerfile ./Front-End'
+                    //sh 'docker push abhishekswarnakar/front-end_image:${BUILD_NUMBER}'
                 }
             }
         }
@@ -21,8 +22,12 @@ pipeline {
         stage('Run front-end Docker image') {
             steps {
                 script {
-                    //sh 'docker pull abhishekswarnakar/front-end_image:latest'
-                    sh 'docker run -d --name front-end_container -p 8000:8000 abhishekswarnakar/front-end_image:latest'
+                    // Stop and remove old container if it exists
+                    sh 'docker stop front-end_container_${BUILD_NUMBER} || true'
+                    sh 'docker rm front-end_container_${BUILD_NUMBER} || true'
+
+                    // Run new container with a unique name
+                    sh 'docker run -d --name front-end_container_${BUILD_NUMBER} -p 8000:8000 abhishekswarnakar/front-end_image:${BUILD_NUMBER}'
                 }
             }
         }
@@ -33,8 +38,18 @@ pipeline {
             echo "PIPELINE FINISHED!!!! THE DOCKER CONTAINER IS RUNNING!!"
         }
         failure {
-            sh 'docker stop front-end_container || true'
-            sh 'docker rm front-end_container || true'
+            echo "PIPELINE FAILED!!!! CHECK THE LOGS FOR DETAILS."
+        }
+        always {
+            script {
+                try {
+                    // This part is useful if you want to clean up any container created during the build, even if it failed
+                    sh 'docker stop front-end_container_${BUILD_NUMBER} || true'
+                    sh 'docker rm front-end_container_${BUILD_NUMBER} || true'
+                } catch (Exception e) {
+                    echo "Error stopping/removing container: ${e}"
+                }
+            }
         }
     }
 }
