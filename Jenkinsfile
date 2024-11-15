@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker build -t abhishekswarnakar/front-end_image:latest -f ./Front-End/Dockerfile ./Front-End'
-                    sh 'docker push abhishekswarnakar/front-end_image:latest'
+                    //sh 'docker push abhishekswarnakar/front-end_image:latest'
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
         stage('Run front-end Docker image') {
             steps {
                 script {
-                    sh 'docker pull abhishekswarnakar/front-end_image:latest'
+                    //sh 'docker pull abhishekswarnakar/front-end_image:latest'
                     sh 'docker run -d --name front-end_container -p 8000:8000 abhishekswarnakar/front-end_image:latest'
                 }
             }
