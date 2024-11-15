@@ -13,7 +13,15 @@ pipeline {
         stage('Build front-end Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t abhishekswarnakar/front-end_image:${BUILD_NUMBER} -f ./Front-End/Dockerfile ./Front-End'
+                    sh '''
+                    ImageId=$(docker images -q)
+                    if [ -n "$ImageId" ]; then
+                        echo "IMAGE ID IS: $ImageId"
+                        docker rmi -f $ImageId
+                    fi
+                        
+                    docker build -t abhishekswarnakar/front-end_image:${BUILD_NUMBER} -f ./Front-End/Dockerfile ./Front-End'
+                    '''
                     //sh 'docker push abhishekswarnakar/front-end_image:${BUILD_NUMBER}'
                 }
             }
@@ -34,8 +42,7 @@ pipeline {
                         if [ $? -eq 0 ]; then
                             echo "REMOVING THE CONATINER: $ContainerId"
                             docker rm $ContainerId
-                            echo "IMAGE ID IS: $ImageId"
-                            docker rmi -f $ImageId
+                            
                             
                         fi
                     else
