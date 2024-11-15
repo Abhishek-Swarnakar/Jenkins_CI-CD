@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_BUILDKIT = '1'
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
     stages {
         stage('Checkout SCM') {
